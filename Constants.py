@@ -8,6 +8,8 @@ PINK = (231,123,204)
 
 PEACH = (255,229,180)
 
+DARK_PINK = (170, 51, 106)
+
 SQUARE_WIDTH = WIDTH/3
 
 SQUARE_HEIGHT = HEIGHT/3
@@ -30,4 +32,5 @@ WINNER = None
 
 RUNNING = True
 
-d = 0
+PIECE_WINNER = {1 : 'CROSS',
+                -1 : 'CIRCLE'}

@@ -24,8 +24,10 @@ class GameState:
     def LoadImages(self):
         self.cross = pygame.image.load('cross.png').convert_alpha()
         self.circle = pygame.image.load('circle.png').convert_alpha()
+        self.restart = pygame.image.load('restart.png').convert_alpha()
         self.cross = pygame.transform.scale(self.cross, (150, 150))
         self.circle = pygame.transform.scale(self.circle, (170, 170))
+        self.restart = pygame.transform.scale(self.restart,(120,120))
         self.cross.set_colorkey((255, 255, 255))
         self.circle.set_colorkey((255, 255, 255))
 
@@ -33,23 +35,26 @@ class GameState:
         for rows in board:
             if sum(rows) == 3:
                 print('Winner Red')
-                self.winner = 'Red'
+                self.winner = True
             elif sum(rows) == -3:
                 print('Winner Blue')
-                self.winner = 'Blue'
+                self.winner =  True
         for i in range(0, 3):
             for j in range(0, 3):
                 self.score += board[j][i]
                 if self.score == 3:
                     print('Winner Red')
-                    self.winner = 'Red'
+                    self.winner =  True
                 elif self.score == -3:
                     print('Winner Blue')
-                    self.winner = 'Blue'
+                    self.winner =  True
             self.score = 0
         if board[0][0] + board[1][1] + board[2][2] == 3 or board[2][0] + board[1][1] + board[0][2] == 3:
             print('Winner Red')
-            self.winner = 'Red'
+            self.winner = True
         elif board[0][0] + board[1][1] + board[2][2] == -3 or board[2][0] + board[1][1] + board[0][2] == -3:
             print('Winner Blue')
-            self.winner = 'Blue'
+            self.winner = True
+
+    def EndScreen(self,screen):
+        pass
