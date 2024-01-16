@@ -1,0 +1,33 @@
+WIDTH , HEIGHT = 500,500
+
+BLACK = (0,0,0)
+
+WHITE = (255,255,255)
+
+PINK = (231,123,204)
+
+PEACH = (255,229,180)
+
+SQUARE_WIDTH = WIDTH/3
+
+SQUARE_HEIGHT = HEIGHT/3
+
+MOVE_COUNTER = []
+
+BOARD = [[0,0,0],
+         [0,0,0],
+         [0,0,0]]
+
+CROSS_1 = 1
+
+CIRCLE_1 = -1
+
+K = 0
+
+SCORE = 0
+
+WINNER = None
+
+RUNNING = True
+
+d = 0
