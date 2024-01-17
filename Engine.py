@@ -11,7 +11,12 @@ class GameState:
         self.cross = None
         self.circle = None
         self.winner = None
+        self.winner2 = None
         self.score = 0
+        self.End = None
+        self.board = [[0,0,0],
+                     [0,0,0],
+                     [0,0,0]]
     def DrawGame(self,COLOR,THICKNESS):
         for i in range(1, 3):
             pygame.draw.line(self.screen, COLOR, (i * self.SQUARE_WIDTH, 0), (i * self.SQUARE_WIDTH, self.HEIGHT), width=THICKNESS)
@@ -36,25 +41,31 @@ class GameState:
             if sum(rows) == 3:
                 print('Winner Red')
                 self.winner = True
+                self.winner2 = True
             elif sum(rows) == -3:
                 print('Winner Blue')
                 self.winner =  True
+                self.winner2 = True
         for i in range(0, 3):
             for j in range(0, 3):
                 self.score += board[j][i]
                 if self.score == 3:
                     print('Winner Red')
                     self.winner =  True
+                    self.winner2 = True
                 elif self.score == -3:
                     print('Winner Blue')
                     self.winner =  True
+                    self.winner2 = True
             self.score = 0
         if board[0][0] + board[1][1] + board[2][2] == 3 or board[2][0] + board[1][1] + board[0][2] == 3:
             print('Winner Red')
             self.winner = True
+            self.winner2 = True
         elif board[0][0] + board[1][1] + board[2][2] == -3 or board[2][0] + board[1][1] + board[0][2] == -3:
             print('Winner Blue')
             self.winner = True
+            self.winner2 = True
 
     def EndScreen(self,screen):
         pass

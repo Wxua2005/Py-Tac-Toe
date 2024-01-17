@@ -16,9 +16,7 @@ SQUARE_HEIGHT = HEIGHT/3
 
 MOVE_COUNTER = []
 
-BOARD = [[0,0,0],
-         [0,0,0],
-         [0,0,0]]
+P_HOLDER = True
 
 CROSS_1 = 1
 
