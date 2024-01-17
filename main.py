@@ -5,7 +5,7 @@ from Constants import *
 import sys
 
 def main():
-    global RUNNING, K , P_HOLDER
+    global RUNNING, K , P_HOLDER , MOVE_COUNTER
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Tic-Tac-Toe")
@@ -27,7 +27,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                RUNNING = False
+                sys.exit()
+
 
             if event.type == pygame.MOUSEBUTTONDOWN and (x,y) not in MOVE_COUNTER and GS.winner != True and GS.winner2 != True:
                 MOVE_COUNTER.append((x,y))
@@ -42,7 +43,13 @@ def main():
                     GS.board = [[0, 0, 0],
                                [0, 0, 0],
                                [0, 0, 0]]
-                    RUNNING = False
+                    MOVE_COUNTER = []
+                    GS.winner = None
+                    GS.winner2 = None
+                    pygame.quit()
+                    return 1
+                else:
+                    return None
 
 
         if GS.winner == True:
@@ -64,4 +71,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    k = main()
+    while k == 1:
+        main()
+    else:
+        sys.exit()
