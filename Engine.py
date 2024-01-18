@@ -17,6 +17,7 @@ class GameState:
         self.board = [[0,0,0],
                      [0,0,0],
                      [0,0,0]]
+        self.MOVE_COUNTER = []
     def DrawGame(self,COLOR,THICKNESS):
         for i in range(1, 3):
             pygame.draw.line(self.screen, COLOR, (i * self.SQUARE_WIDTH, 0), (i * self.SQUARE_WIDTH, self.HEIGHT), width=THICKNESS)
@@ -27,6 +28,7 @@ class GameState:
                 self.screen.blit(self.font.render(f'({j},{i})',True,COLOR),(j*self.SQUARE_WIDTH,i*self.SQUARE_HEIGHT))
 
     def LoadImages(self):
+        self.icon = pygame.image.load('iconimg.png').convert()
         self.cross = pygame.image.load('cross.png').convert_alpha()
         self.circle = pygame.image.load('circle.png').convert_alpha()
         self.restart = pygame.image.load('restart.png').convert_alpha()
@@ -74,6 +76,9 @@ class GameState:
             print('Winner Blue')
             self.winner = True
             self.winner2 = True
+
+        if self.winner == None and len(self.MOVE_COUNTER) == 9:
+            print('Draw')
 
 
 
