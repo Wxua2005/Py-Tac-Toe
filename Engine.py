@@ -1,5 +1,5 @@
 import pygame
-
+from time import sleep
 class GameState:
     def __init__(self,screen,SQUARE_WIDTH,SQUARE_HEIGHT,WIDTH,HEIGHT,font):
         self.screen = screen
@@ -10,6 +10,7 @@ class GameState:
         self.font = font
         self.cross = None
         self.circle = None
+        self.icon = None
         self.winner = None
         self.winner2 = None
         self.score = 0
@@ -17,8 +18,24 @@ class GameState:
         self.board = [[0,0,0],
                      [0,0,0],
                      [0,0,0]]
+        self.board2 = [['--','--','--'],
+                      ['--','--','--'],
+                      ['--','--','--']]
         self.MOVE_COUNTER = []
+        self.PIECE_WINNER = {1 : 'CROSS',
+                            -1 : 'CIRCLE'}
+        self.PEACH = (255, 229, 180)
+        self.BROWN = (196, 164, 132)
+        self.o = {'X': self.cross,
+                  'O': self.circle,
+                  '--': self.icon}
+        self.GAME_SCREEN = pygame.Rect((0, 0), (self.WIDTH, self.HEIGHT))
+        self.SIDE_BAR = pygame.Rect((self.WIDTH,0),(300,self.HEIGHT))
+
     def DrawGame(self,COLOR,THICKNESS):
+        self.screen.fill(self.PEACH, self.GAME_SCREEN)
+        self.screen.fill(self.BROWN, self.SIDE_BAR)
+
         for i in range(1, 3):
             pygame.draw.line(self.screen, COLOR, (i * self.SQUARE_WIDTH, 0), (i * self.SQUARE_WIDTH, self.HEIGHT), width=THICKNESS)
             pygame.draw.line(self.screen, COLOR, (0, i * self.SQUARE_HEIGHT), (self.WIDTH, i * self.SQUARE_HEIGHT), width=THICKNESS)
@@ -27,6 +44,7 @@ class GameState:
             for j in range(0,3):
                 self.screen.blit(self.font.render(f'({j},{i})',True,COLOR),(j*self.SQUARE_WIDTH,i*self.SQUARE_HEIGHT))
 
+        pygame.draw.line(self.screen,COLOR,(500,0),(500,self.HEIGHT),width=3)
     def LoadImages(self):
         self.icon = pygame.image.load('iconimg.png').convert()
         self.cross = pygame.image.load('cross.png').convert_alpha()
@@ -80,5 +98,34 @@ class GameState:
         if self.winner == None and len(self.MOVE_COUNTER) == 9:
             print('Draw')
 
+    def EndScreen(self,GS,font2,music):
+        pygame.display.update()
+        sleep(2)
+        self.screen.fill('Pink',self.GAME_SCREEN)
+        GS.winner = False
+        LAST_MOVE = GS.board[GS.MOVE_COUNTER[-1][1]][GS.MOVE_COUNTER[-1][0]]
+        self.screen.blit(font2.render(f'Game Over', True, 'Maroon'), (130, 50))
+        self.screen.blit(font2.render(f'{GS.PIECE_WINNER[LAST_MOVE]} WINS', True, 'Purple'), (130, 130))
+        self.screen.blit(GS.restart, (190, 300))
+        pygame.draw.lines(self.screen, 'BLACK', False, [(168, 289), (324, 289), (324, 427), (168, 427), (168, 289)], width=4)
+        music.play()
+        GS.End = True
 
+    def Reset(self):
+        self.board = [[0, 0, 0],
+                    [0, 0, 0],
+                    [0, 0, 0]]
+        self.MOVE_COUNTER = []
+        self.DrawGame((0,0,0), 3)
+
+    def Undo(self,x,y):
+        self.board2[self.MOVE_COUNTER[-1][1]][self.MOVE_COUNTER[-1][0]] = "--"
+        self.board[self.MOVE_COUNTER[-1][1]][self.MOVE_COUNTER[-1][0]] = 0
+        self.screen.fill(self.PEACH)
+
+        for row in range(0,3):
+            for col in (0,3):
+                ik = self.o[self.board2[row][col]]
+                print(ik)
+                self.screen.blit(ik,((x*self.SQUARE_WIDTH),(y*self.SQUARE_HEIGHT)))
 
