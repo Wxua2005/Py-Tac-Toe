@@ -3,17 +3,24 @@ from time import sleep
 from Engine import GameState
 from Constants import *
 import sys
-
+import json
+pygame.init()
+mydict = {
+   "TotalGames" : 0,
+    "BlueWin" : 0,
+    "RedWin" : 0
+}
 def main():
     global RUNNING, K , P_HOLDER
-    pygame.init()
     screen = pygame.display.set_mode((800, HEIGHT))
     pygame.display.set_caption("TicTacToe")
 
     font = pygame.font.Font('Cosplay Culture.ttf', 20)
     font2 = pygame.font.Font('Cosplay Culture.ttf', 50)
+    font3 = pygame.font.Font('Cosplay Culture.ttf', 30)
     pop_music = pygame.mixer.Sound('pop_sound.mp3')
     restart_music = pygame.mixer.Sound('RestartSound.mp3')
+    background_music = pygame.mixer.Sound('Sakura-Girl-Peach-chosic.com_.mp3')
 
     cursor = pygame.cursors.Cursor((24, 24), (0, 0) ,*pygame.cursors.compile(pygame.cursors.thickarrow_strings))
     wait_cursor = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_WAITARROW)
@@ -21,7 +28,9 @@ def main():
     pygame.mouse.set_cursor(cursor)
 
     GS = GameState(screen,SQUARE_WIDTH,SQUARE_HEIGHT,WIDTH,HEIGHT,font)
-    GS.DrawGame(BLACK,3)
+    background_music.play(loops=4)
+    background_music.set_volume(0.1)
+    GS.DrawGame(BLACK,3,mydict,font3)
     GS.LoadImages()
 
 
@@ -46,7 +55,7 @@ def main():
                 GS.MOVE_COUNTER.append((x,y))
                 GS.board[y][x] = TURN_1
                 GS.board2[y][x] = TURN_2
-                GS.WinChecker(GS.board)
+                GS.WinChecker(GS.board,mydict)
                 K += 1
                 pop_music.play()
                 screen.blit(TURN,((x*SQUARE_WIDTH),(y*SQUARE_HEIGHT)))
@@ -55,6 +64,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and GS.End == True:
                 restart_rect = pygame.Rect((168, 289), (156, 138))
                 if restart_rect.collidepoint(pygame.mouse.get_pos()):
+                    mydict["TotalGames"] += 1
                     pygame.quit()
                     return 1
                 else:
@@ -73,6 +83,7 @@ def main():
             GS.EndScreen(GS,font2,restart_music)
             pygame.mouse.set_cursor(cursor)
 
+
         pygame.display.update()
 
 
@@ -82,4 +93,6 @@ if __name__ == "__main__":
     if k == None:
         sys.exit()
     while k == 1:
+        pygame.init()
         k = main()
+

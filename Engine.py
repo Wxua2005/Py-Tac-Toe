@@ -32,7 +32,7 @@ class GameState:
         self.GAME_SCREEN = pygame.Rect((0, 0), (self.WIDTH, self.HEIGHT))
         self.SIDE_BAR = pygame.Rect((self.WIDTH,0),(300,self.HEIGHT))
 
-    def DrawGame(self,COLOR,THICKNESS):
+    def DrawGame(self,COLOR,THICKNESS,mydict,font):
         self.screen.fill(self.PEACH, self.GAME_SCREEN)
         self.screen.fill(self.BROWN, self.SIDE_BAR)
 
@@ -44,6 +44,9 @@ class GameState:
             for j in range(0,3):
                 self.screen.blit(self.font.render(f'({j},{i})',True,COLOR),(j*self.SQUARE_WIDTH,i*self.SQUARE_HEIGHT))
 
+        self.screen.blit(font.render(f'Game Count : {mydict["TotalGames"]}',True,'LightGreen'),(550,10))
+        self.screen.blit(font.render(f'Red Win: {mydict["RedWin"]}', True, (255, 71, 76)), (550, 60))
+        self.screen.blit(font.render(f'Blue Win : {mydict["BlueWin"]}', True, (173, 216, 230)), (550, 110))
         pygame.draw.line(self.screen,COLOR,(500,0),(500,self.HEIGHT),width=3)
     def LoadImages(self):
         self.icon = pygame.image.load('iconimg.png').convert()
@@ -56,16 +59,18 @@ class GameState:
         self.cross.set_colorkey((255, 255, 255))
         self.circle.set_colorkey((255, 255, 255))
 
-    def WinChecker(self,board):
+    def WinChecker(self,board,mydict):
         for rows in board:
 
             if sum(rows) == 3:
                 print('Winner Red')
+                mydict["RedWin"] += 1
                 self.winner = True
                 self.winner2 = True
 
             elif sum(rows) == -3:
                 print('Winner Blue')
+                mydict["BlueWin"] += 1
                 self.winner =  True
                 self.winner2 = True
 
@@ -75,11 +80,13 @@ class GameState:
 
                 if self.score == 3:
                     print('Winner Red')
+                    mydict["RedWin"] += 1
                     self.winner =  True
                     self.winner2 = True
 
                 elif self.score == -3:
                     print('Winner Blue')
+                    mydict["BlueWin"] += 1
                     self.winner =  True
                     self.winner2 = True
 
@@ -87,11 +94,13 @@ class GameState:
 
         if board[0][0] + board[1][1] + board[2][2] == 3 or board[2][0] + board[1][1] + board[0][2] == 3:
             print('Winner Red')
+            mydict["RedWin"] += 1
             self.winner = True
             self.winner2 = True
 
         elif board[0][0] + board[1][1] + board[2][2] == -3 or board[2][0] + board[1][1] + board[0][2] == -3:
             print('Winner Blue')
+            mydict["BlueWin"] += 1
             self.winner = True
             self.winner2 = True
 
